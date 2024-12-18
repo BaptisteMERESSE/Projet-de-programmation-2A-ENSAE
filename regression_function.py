@@ -73,6 +73,7 @@ def mse_regression(data, column_list, interest_var):
     data["Regression"] = data.apply(lambda row: sum([row[column_list[i]]*beta[i] for i in range(len(column_list))])[0], axis = 1)
     R2 = var(data, "Regression")/var(data, interest_var)
     R2_adj = 1 - (1-R2)*(n-1)/(n-k)
+    data["Regression"] = data["Regression"].round(2)
 
     return beta, R2, R2_adj
 

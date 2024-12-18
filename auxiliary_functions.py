@@ -62,5 +62,19 @@ def mean_error(data, column_1, column_2):
     working_data["AbsError"] = working_data.apply(lambda row: abs(row["Error"]), axis = 1)
     a = working_data["AbsError"].sum()/len(working_data)
     return a
-    
 
+def split_data(percentage, data):
+    index = data.index.tolist()
+
+    l = len(data)
+
+
+data = {
+    'A': [1, 5, 12],
+    'B': [7, 3, 4],
+    'C': [2, 8, 9],
+    'D': [10, 7, 10]
+}
+data = pd.DataFrame(data)
+
+split_data(0.1, data)
