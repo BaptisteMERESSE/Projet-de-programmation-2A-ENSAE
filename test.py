@@ -12,8 +12,7 @@ data = {
     'D': [10, 7, 10]
 }
 data = pd.DataFrame(data)
-x = -1000
-x = np.clip(x, -500, 500)
-print(x)
 
-print(np.exp(x))
+a = [1,2,3,4,5]
+
+print(a[3:])

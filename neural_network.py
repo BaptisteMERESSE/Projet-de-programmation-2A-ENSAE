@@ -227,6 +227,18 @@ class Neural_network():
             entry = output
         return output
 
+    def real_treatment(self, entry:list):
+        for i in range(self.N):
+            output = np.zeros(self.entry_size_list[i+1])
+            for j in range(self.entry_size_list[i+1]):
+                X = self.bias_list[i]
+                X += + np.sum(self.weigth_matrix_list[i][j]*entry)
+                output[j] = self.activation_function_list[i].f(X)
+            entry = output
+        output = output[0]
+        output = np.log(output/(1-output))
+        return output
+
     def forward_processing(self):
         """
         Given an entry to the neural network, return two matrix H_list and Z_list.
@@ -341,8 +353,8 @@ class Neural_network():
         self.initialise_training(data, learning_factor)
         for i in range(n):
             self.epoch()
+            print(i+1)
             print("\nmean_loss", self.sum_loss/self.data_size, "\n")
-            print(i)
             self.m = 0
 
 
@@ -444,6 +456,10 @@ def train_network_score(network_path:str, data, score:int, n_max:int = 20, learn
     working_network.epoch_while(data, learning_factor, score, n_max)
     working_network.save(network_path)
 
+def apply_network(network_path:str, data):
+    working_network = Neural_network.load(network_path)
+    data["Neural prediction"] = data.apply(lambda row: working_network.real_treatment(row[working_network.column_titles_list].tolist()), axis = 1)
+
 """
 original_data = pd.read_csv("original_data.csv")
 original_data.to_csv("working_data.csv", index = False)
@@ -472,6 +488,20 @@ sub_data = sub_data[order]
 
 
 
+d = {}
+l = sub_data["Expansion"].unique()
+for i in range(len(l)):
+    expansion = l[i]
+    d[expansion] = i
+sub_data["Expansion number"] = sub_data["Expansion"].map(d)
+
+d = {}
+l = sub_data["Rareté"].unique()
+for i in range(len(l)):
+    rarity = l[i]
+    d[rarity] = i
+sub_data["Rareté number"] = sub_data["Rareté"].map(d)
+
 column_titles_list = ["Tournament_last_month", "Price 30 days", "Price 7 days", "Min price"]
 output_column = ["Price trend"]
 
@@ -489,5 +519,6 @@ working_network_path = path + "/working_network"
 #copy_network(create_network_path, working_network_path)
 
 
-train_network_score(working_network_path, sub_data, score = 0.15, n_max= 20, learning_factor= 0.000001)
+#train_network_score(working_network_path, sub_data, score = 0.15, n_max= 20, learning_factor= 0.000001)
+
 """

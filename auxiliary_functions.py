@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import random as rd
 
 def empty_df(save_path, titles = []):
     """
@@ -63,18 +64,13 @@ def mean_error(data, column_1, column_2):
     a = working_data["AbsError"].sum()/len(working_data)
     return a
 
-def split_data(percentage, data):
+def split_data(data, percentage):
     index = data.index.tolist()
-
-    l = len(data)
-
-
-data = {
-    'A': [1, 5, 12],
-    'B': [7, 3, 4],
-    'C': [2, 8, 9],
-    'D': [10, 7, 10]
-}
-data = pd.DataFrame(data)
-
-split_data(0.1, data)
+    rd.shuffle(index)
+    l = len(index)
+    a = int(percentage*l)
+    index_1 = index[:a]
+    index_2 = index[a:]
+    data_1 = data.loc[index_1]
+    data_2 = data.loc[index_2]
+    return data_1, data_2
