@@ -1,16 +1,6 @@
 import pandas as pd
 import numpy as np
 
-a = np.array([1,2,3])
-
-data = {
-    'A': [1, 1, 1],
-    'B': [7, 3, 4],
-    'C': [2, 8, 9],
-    'D': [10, 7, 10]
-}
-data = pd.DataFrame(data)
-
 def mean(data, column_name):
     m = data[column_name].mean()
     return m
@@ -76,17 +66,3 @@ def mse_regression(data, column_list, interest_var):
     data["Regression"] = data["Regression"].round(2)
 
     return beta, R2, R2_adj
-
-
-
-
-    
-
-""" 
-d = [data["A"].values]
-print(np.transpose(d))
-print(np.dot(np.transpose(d), d))
-"""
-#print(type_free_mean(data, "A"))
-#print(mse_regression(data, ["A", "B"], "D"))
-#print(data.head())

@@ -36,7 +36,6 @@ def add_expansion(expansion_name):
         driver.get(base_url + expansion_name)
         time.sleep(random.uniform(2, 5))
         nmbr_page = int(driver.find_element(By.CLASS_NAME, "mx-1").text[-3:].replace(" ", "").replace("+", ""))
-
         for i in range(1, nmbr_page+1):
             time.sleep(random.uniform(2, 5))
             driver.get(base_url+ expansion_name + "?site=" + str(i))
@@ -75,14 +74,15 @@ def add_expansion(expansion_name):
                 #On rajoute à l'entrée "nom de la carte" ses caractéristiques dans le dico
                 dico[data_lign] = card_elements
                 data_lign+=1
-
-        data = pd.DataFrame.from_dict(dico, orient = "index")
-        data.columns = titles
+            
+    
+        data = pd.DataFrame.from_dict(dico, orient = "index", columns=titles)
+        
 
         ###A check
+        max_index = existent_data["Index"].max()
+        data["Index"] = range(max_index + 1, max_index + 1 + len(data))
         new_data = pd.concat([existent_data, data], ignore_index=True, sort=False)
-        new_data.loc[pd.isna(data["Index"]), "Index"] = data.index.to_series().astype(int)
-        new_data["Index"] = data["Index"].astype(int)
         new_data.to_csv('original_data.csv', index = False)
         driver.quit()
 
@@ -151,3 +151,4 @@ def add_price_trends(indexes):
     original_data.to_csv("original_data.csv", index = False)
     
     driver.quit()
+
