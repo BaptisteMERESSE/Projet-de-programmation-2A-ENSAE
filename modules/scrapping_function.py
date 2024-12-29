@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 def add_expansion(expansion_name):
-    existent_data = pd.read_csv('original_data.csv')
+    existent_data = pd.read_csv('data/original_data.csv')
     if expansion_name in existent_data["Expansion"].unique().tolist():
         pass
     else:
@@ -83,15 +83,15 @@ def add_expansion(expansion_name):
         max_index = existent_data["Index"].max()
         data["Index"] = range(max_index + 1, max_index + 1 + len(data))
         new_data = pd.concat([existent_data, data], ignore_index=True, sort=False)
-        new_data.to_csv('original_data.csv', index = False)
+        new_data.to_csv('data/original_data.csv', index = False)
         driver.quit()
 
 
 
 
 def add_tournament_use(indexes):
-    original_data = pd.read_csv("original_data.csv")
-    data = pd.read_csv("working_data.csv")
+    original_data = pd.read_csv("data/original_data.csv")
+    data = pd.read_csv("data/working_data.csv")
     
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--start-maximized")
@@ -114,7 +114,7 @@ def add_tournament_use(indexes):
         table = driver.find_element(By.CLASS_NAME, "data-table.striped")
         tournament_use = len(table.find_elements(By.TAG_NAME, "tr"))-1
         original_data.loc[index, "Tournament_last_month"] = tournament_use
-    original_data.to_csv("original_data.csv", index=False)
+    original_data.to_csv("data/original_data.csv", index=False)
 
     driver.quit()
 
@@ -124,8 +124,8 @@ def add_price_trends(indexes):
     Prend en argument une liste d'index, et rajoute les tendances de prix de toutes les cartes correspondantes.
     On utilise pour cela l'URL récupéré initialement dans le tableau.
     """
-    original_data = pd.read_csv("original_data.csv")
-    data = pd.read_csv("working_data.csv")
+    original_data = pd.read_csv("data/original_data.csv")
+    data = pd.read_csv("data/working_data.csv")
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--start-maximized")
@@ -148,7 +148,7 @@ def add_price_trends(indexes):
         original_data.loc[index, "Price 7 days"] = price_7
         original_data.loc[index, "Price 30 days"] = price_30
 
-    original_data.to_csv("original_data.csv", index = False)
+    original_data.to_csv("data/original_data.csv", index = False)
     
     driver.quit()
 
